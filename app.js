@@ -53,13 +53,8 @@ app.post("/webhook", (req, res) => {
   }
 });
 
-const FBTOKEN =
-  "EAAIcdso9ob4BALn9ul5XQClO0CSdg7ZBt5P82NW0DcrPrcLeJicPrrl3Vr6TjFCA5xFOwWQYE85t615uZB5XgdpZANoaWiffDZCD1ZC7qy8c3VFezwLG3JywYwvTxizkjSAvuOhCdnlnyII5i51juGf8ZAqbvxfr7l9Q6ihWnkJ1AgrnWYnZCfr";
-
 // Accepts GET requests at the /webhook endpoint
 app.get("/webhook", (req, res) => {
-  /** UPDATE YOUR VERIFY TOKEN **/
-  const VERIFY_TOKEN = "whatDOEStheFOXSay??";
 
   // Parse params from the webhook verification request
   let mode = req.query["hub.mode"];
@@ -69,7 +64,7 @@ app.get("/webhook", (req, res) => {
   // Check if a token and mode were sent
   if (mode && token) {
     // Check the mode and token sent are correct
-    if (mode === "subscribe" && token === VERIFY_TOKEN) {
+    if (mode === "subscribe" && token === process.env.FB_VERIFY_TOKEN ) {
       // Respond with 200 OK and challenge token from the request
       console.log("WEBHOOK_VERIFIED");
       res.status(200).send(challenge);
@@ -115,13 +110,20 @@ function handleMessage(sender_psid, received_message) {
   let response;
 
   // Check if the message contains text
-  if (received_message.text) {    
-
-    // Create the payload for a basic text message
+  if (received_message.text) {
+    
+    // Creates the payload for a basic text message, which
+    // will be added to the body of our request to the Send API
     response = {
-      "text": `You sent the message: "${received_message.text}". Now send me an image!`
+      "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
     }
-  }  
+
+  } else if (received_message.attachments) {
+  
+    // Gets the URL of the message attachment
+    let attachment_url = received_message.attachments[0].payload.url;
+  
+  } 
   
   // Sends the response message
   callSendAPI(sender_psid, response);    
