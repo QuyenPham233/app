@@ -76,3 +76,7 @@ app.get('/webhook', (req, res) => {
     }
   }
 });
+
+app.get('/foo', (req,res)=> {
+  res.status(200).send('foo bar bar?');
+});
