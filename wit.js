@@ -162,13 +162,17 @@ app.post('/webhook', (req, res) => {
             // Let's run /message on the text to extract some entities, intents and traits
             wit.message(text).then(({entities, intents, traits}) => {
               // You can customize your response using these
+              console.log("log intents:");
               console.log(intents);
-              
-              var it = confidentIntent(intents);
-              console.log(it);
-              
+              console.log("- - - ");
+     
+              console.log("log entities:");
               console.log(entities);
+              console.log("- - - ");
+              
+              console.log("log traits:");
               console.log(traits);
+              console.log("- - - ");
               // For now, let's reply with another automatic message
               fbMessage(sender, `We've received your message: ${text}.`);
             })
@@ -186,6 +190,12 @@ app.post('/webhook', (req, res) => {
 });
 
 function confidentIntent(intents) {
+  if (intents == null){
+    console.log("intents null...");
+    return null;
+  } else {
+    console.log(JSON.stringify(intents));
+  }
   let bestValue;
   var confidence = 0;
   intents.forEach(function(intent){
