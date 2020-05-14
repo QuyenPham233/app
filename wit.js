@@ -163,6 +163,10 @@ app.post('/webhook', (req, res) => {
             wit.message(text).then(({entities, intents, traits}) => {
               // You can customize your response using these
               console.log(intents);
+              
+              var it = confidentIntent(intents);
+              console.log(it);
+              
               console.log(entities);
               console.log(traits);
               // For now, let's reply with another automatic message
@@ -180,6 +184,19 @@ app.post('/webhook', (req, res) => {
   }
   res.sendStatus(200);
 });
+
+function confidentIntent(intents) {
+  let bestValue;
+  var confidence = 0;
+  intents.forEach(function(intent){
+    if (intent.confidence > confidence){
+      confidence = intent.confidence;
+      bestValue = intent.value;
+    }
+  });
+  return bestValue;
+}
+
 
 /*
  * Verify that the callback came from Facebook. Using the App Secret from
