@@ -175,6 +175,11 @@ app.post('/webhook', (req, res) => {
               } else {
                 fbMessage(sender, `${person.name} says 'hi' back`);
               }
+              
+              timeFromLocation().then((time)=> {
+                console.log('got time:');
+                console.log(time);
+              });
 
             })
             .catch((err) => {
@@ -189,6 +194,13 @@ app.post('/webhook', (req, res) => {
   }
   res.sendStatus(200);
 });
+
+function timeFromLocation(){
+  var url = "http://worldtimeapi.org/api/timezone/America/Argentina/Salta";
+
+  return fetch(url, {})
+    .then( res => res.json() );
+}
 
 function personFromEntities(entities){
   if (entities == null){
