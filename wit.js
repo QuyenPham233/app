@@ -193,11 +193,14 @@ function responseFromWit(data) {
   
   var tz = loc.resolved.values[0].timezone;
   
-  return dateFromLocation(tz);
+  return currentTimeFromTimezone(tz)
+    .then(res => {
+    return `It's currently ${res}`;
+  });
 }
 
 
-function dateFromLocation(loc){
+function currentTimeFromTimezone(loc){
   var url = "http://worldtimeapi.org/api/timezone/"+ loc;
 
   console.log("try fetch:  " + url);
