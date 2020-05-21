@@ -210,10 +210,11 @@ function dateFromLocation(loc){
     //trim off the timezone to avoid date auto-adjusting
     var time = data.datetime.substring(0,19);
     var d = new Date(time);
-    
-    console.log(d.toTimeString("en-US"));
-    console.log(d.toUTCString("en-US"));
-    return d.toTimeString("en-US");
+    // var options = { hour: 'long', minute: 'numeric', month: 'long', day: 'numeric' };
+    // console.log(d.toTimeString("en-US"));
+    // console.log(d.toUTCString("en-US"));
+    var timestring = d.toUTCString("en-US").substring(0,22);
+    return timestring;
   });
 }
 
