@@ -179,16 +179,16 @@ function responseFromWit(data) {
   console.log(data.entities);
   console.log("- - - ");
   
-  if (data.entities == null){
+  
+  if (data.location == null){
+    return Promise.resolve("ask me something like 'what time is it in New York?'");
+  }
+  var loc = mostConfident(data.locations);
+  if (loc == null){
     return Promise.resolve("ask me something like 'what time is it in New York?'");
   }
   
-  if (data.entities.timeAtPlace == null){
-    return Promise.resolve("ask me something like 'what time is it in New York?'");
-  }
-  
-  
-  
+  console.log(loc);
   
   // console.log("log intents:");
   // console.log(intents);
@@ -219,6 +219,28 @@ function dateFromLocation(loc){
   return fetch(url, {})
     .then( res => res.json() )
     .then( data => new Date(data.unixtime) );
+}
+
+function mostConfident(items){
+  if (items == null){
+    return null;
+  }
+  if (items.length == null || items.length == 0){
+    return null;
+  }
+  if (items.length == 1){
+    return items[0];
+  }
+  var confidence = 0;
+  var itm = null;
+  
+  items.forEach(function(item){
+    if (item.confidence > confidence){
+      confidence = item.confidence;
+      itm = item;
+    }
+  });
+  return itm;  
 }
 
 function personFromEntities(entities){
