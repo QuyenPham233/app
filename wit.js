@@ -207,22 +207,9 @@ function dateFromLocation(loc){
     .then( data => {
     console.log(data);
     
-    var offset = 0;
-    var off = data.utc_offset;
-    offset += parseInt(off.substring(1,3)) * 3600 * 1000;
-    offset += parseInt(off.substring(4,6)) * 60 * 1000;
-    if (off.includes("-")){
-      offset *= -1;
-    }
-    
-    var unix = parseInt(data.unixtime);
-    var foo = unix + offset;
-    console.log("unix"unix);
-    console.log(offset);
-    console.log(foo);
-    var d = new Date(foo);
-    
-    var now = new Date() + offset;
+    //trim off the timezone to avoid date auto-adjusting
+    var time = data.datetime.substring(0,19);
+    var d = new Date(time);
     
     console.log(d.toTimeString("en-US"));
     console.log(d.toUTCString("en-US"));
