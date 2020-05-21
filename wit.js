@@ -180,48 +180,39 @@ function responseFromWit(data) {
   console.log("- - - ");
   
   
-  if (data.location == null){
+  if (data.entities.location == null){
     return Promise.resolve("ask me something like 'what time is it in New York?'");
   }
-  var loc = mostConfident(data.locations);
+  var loc = mostConfident(data.entities.location);
   if (loc == null){
     return Promise.resolve("ask me something like 'what time is it in New York?'");
   }
-  
+
+  console.log("loc:");
   console.log(loc);
   
-  // console.log("log intents:");
-  // console.log(intents);
-  // console.log("- - - ");
-  // console.log("log entities:");
-  // console.log(entities);
-  // console.log("- - - ");
-
-  // var person = personFromEntities(entities);
-  // if (person == null) {
-  //   fbMessage(sender, `Sorry, I'm not sure what you mean`);
-  // } else {
-  //   fbMessage(sender, `${person.name} says 'hi' back`);
-  // }
-
-  dateFromLocation().then(d => {
-    var s = d.toLocaleTimeString("en-US");
-    console.log(s);
-  });
-
-  return Promise.resolve("foobar");
+  var tz = loc.resolved.values[0].timezone;
+  
+  return dateFromLocation(tz)
+    .then(d => d.toLocaleTimeString("en-US"));
 }
 
 
 function dateFromLocation(loc){
-  var url = "http://worldtimeapi.org/api/timezone/America/Argentina/Salta";
+  var url = "http://worldtimeapi.org/api/timezone/"+ loc;
 
+  console.log("try fetch:  " + url);
+  
   return fetch(url, {})
     .then( res => res.json() )
-    .then( data => new Date(data.unixtime) );
+    .then( data => {
+    console.log("unix: " + data.unixtime);
+    return new Date(data.unixtime) });
 }
 
 function mostConfident(items){
+  console.log("items:");
+  console.log(items);
   if (items == null){
     return null;
   }
