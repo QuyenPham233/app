@@ -194,7 +194,9 @@ function responseFromWit(data) {
   var tz = loc.resolved.values[0].timezone;
   
   return dateFromLocation(tz)
-    .then(d => d.toLocaleTimeString("en-US"));
+    .then(d => {
+    //console.log("now is:  " + Date.now().toTimeString("en-US"));
+    return d.toTimeString("en-US")});
 }
 
 
@@ -206,8 +208,8 @@ function dateFromLocation(loc){
   return fetch(url, {})
     .then( res => res.json() )
     .then( data => {
-    console.log("unix: " + data.unixtime);
-    return new Date(data.unixtime) });
+    console.log(data);
+    return new Date(data.utc_datetime) });
 }
 
 function mostConfident(items){
