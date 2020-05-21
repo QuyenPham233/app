@@ -195,7 +195,7 @@ function responseFromWit(data) {
   
   return dateFromLocation(tz)
     .then(d => {
-    //console.log("now is:  " + Date.now().toTimeString("en-US"));
+    console.log("now is:  " + new Date().toTimeString("en-US"));
     return d.toTimeString("en-US")});
 }
 
@@ -209,7 +209,8 @@ function dateFromLocation(loc){
     .then( res => res.json() )
     .then( data => {
     console.log(data);
-    return new Date(data.utc_datetime) });
+    return new Date(data.datetime);
+  });
 }
 
 function mostConfident(items){
