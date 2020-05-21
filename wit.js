@@ -195,8 +195,8 @@ function responseFromWit(data) {
   
   return dateFromLocation(tz)
     .then(d => {
-    console.log("now is:  " + new Date().toTimeString("en-US"));
-    return d.toTimeString("en-US")});
+    console.log("now is:  " + new Date().toUTCString("en-US"));
+    return d.toUTCString("en-US")});
 }
 
 
@@ -209,7 +209,7 @@ function dateFromLocation(loc){
     .then( res => res.json() )
     .then( data => {
     console.log(data);
-    return new Date(data.datetime);
+    return new Date(data.unixtime);
   });
 }
 
