@@ -168,13 +168,19 @@ app.post('/webhook', (req, res) => {
      
               console.log("log entities:");
               console.log(entities);
+              console.log("- - ");
+              console.log(entities.notable_person);
+              console.log("- - ");
+              console.log(entities.somePhrase);
               console.log("- - - ");
               
-              console.log("log traits:");
-              console.log(traits);
-              console.log("- - - ");
-              // For now, let's reply with another automatic message
-              fbMessage(sender, `We've received your message: ${text}.`);
+              var person = personFromEntities(entities);
+              if (person == null){
+                fbMessage(sender, `Sorry, I'm not sure what you mean`);
+              } else {
+                fbMessage(sender, `${person.name} says 'hi' back`);
+              }
+
             })
             .catch((err) => {
               console.error('Oops! Got an error from Wit: ', err.stack || err);
@@ -188,6 +194,26 @@ app.post('/webhook', (req, res) => {
   }
   res.sendStatus(200);
 });
+
+function personFromEntities(entities){
+  if (entities == null){
+    return null;
+  }
+  if (entities.notable_person == null){
+    return null;
+  }
+  
+  var bestPerson = null;
+  var confidence = 0;
+  entities.notable_person.forEach(function(person){
+    if (person.confidence > confidence){
+      confidence = person.confidence;
+      bestPerson = person.value;
+    }
+  });
+  
+  return bestPerson;
+}
 
 function confidentIntent(intents) {
   if (intents == null){
