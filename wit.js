@@ -156,15 +156,10 @@ app.post('/webhook', (req, res) => {
           } else if (text) {
             // We received a text message
             // Let's run /message on the text to extract some entities, intents and traits
-            wit.message(text).then(({entities, intents, traits}) => {
-              
-              responseFromWit(entities, intents, traits)
-              .then((msg)=>{
-                fbMessage(sender, msg);
-              })
-              
-   
-
+            wit.message(text)
+              .then((res) => responseFromWit(res))
+              .then((msg) => {
+              fbMessage(sender, msg);
             })
             .catch((err) => {
               console.error('Oops! Got an error from Wit: ', err.stack || err);
@@ -179,24 +174,35 @@ app.post('/webhook', (req, res) => {
   res.sendStatus(200);
 });
 
-function responseFromWit({ entities, intents, traits }) {
-  console.log("log intents:");
-  console.log(intents);
+function responseFromWit(data) {
   console.log("- - - ");
-  console.log("log entities:");
-  console.log(entities);
-  console.log("- - ");
-  console.log(entities.notable_person);
-  console.log("- - ");
-  console.log(entities.somePhrase);
+  console.log(data.entities);
   console.log("- - - ");
-
-  var person = personFromEntities(entities);
-  if (person == null) {
-    fbMessage(sender, `Sorry, I'm not sure what you mean`);
-  } else {
-    fbMessage(sender, `${person.name} says 'hi' back`);
+  
+  if (data.entities == null){
+    return Promise.resolve("ask me something like 'what time is it in New York?'");
   }
+  
+  if (data.entities.timeAtPlace == null){
+    return Promise.resolve("ask me something like 'what time is it in New York?'");
+  }
+  
+  
+  
+  
+  // console.log("log intents:");
+  // console.log(intents);
+  // console.log("- - - ");
+  // console.log("log entities:");
+  // console.log(entities);
+  // console.log("- - - ");
+
+  // var person = personFromEntities(entities);
+  // if (person == null) {
+  //   fbMessage(sender, `Sorry, I'm not sure what you mean`);
+  // } else {
+  //   fbMessage(sender, `${person.name} says 'hi' back`);
+  // }
 
   dateFromLocation().then(d => {
     var s = d.toLocaleTimeString("en-US");
