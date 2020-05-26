@@ -7,7 +7,7 @@ function responseFromWit(data) {
   if (intent.value == "distanceBetween"){
     return handleDistanceBetween(data);
   }
-  if (intent.value == "timeAtLocation"){
+  if (intent.value == "timeAtPlace"){
     return handleTimeAtPlace(data);
   }
   
@@ -20,15 +20,15 @@ function handleDistanceBetween(data){
     return handleGibberish();
   }
 
-  var loc0 = location[0].resolved.values[0].coords;
-  var loc1 = location[1].resolved.values[0].coords;
-  var distance = getDistanceFromLatLonInKm(loc0.lat, loc0.long, loc1.lat, loc1.long);
-  
-  return Promise.resolve(`It's ${distance}km away`); 
+  var loc0 = location[0].resolved.values[0];
+  var loc1 = location[1].resolved.values[0];
+  var distance = getDistanceFromLatLonInKm(loc0.coords.lat, loc0.coords.long, loc1.coords.lat, loc1.coords.long);
+  distance = roundTo(distance, 0.01);
+  return Promise.resolve(`It's ${distance}km from ${loc0.name} to ${loc1.name}`); 
 }
 
 function handleGibberish(){
-  return Promise.resolve("ask me something like 'what time is it in New York?'"); 
+  return Promise.resolve("ask me something like 'what time is it in New York?' or 'how far from New York to Los Angeles?'"); 
 }
 
 function handleTimeAtPlace(data){
@@ -41,10 +41,11 @@ function handleTimeAtPlace(data){
   console.log(loc);
   
   var tz = loc.resolved.values[0].timezone;
+  var placeName = loc.resolved.values[0].name;
   
   return currentTimeFromTimezone(tz)
     .then(res => {
-    return `It's currently ${res}`;
+    return `It's currently ${res} in ${placeName}`;
   });
 }
 
