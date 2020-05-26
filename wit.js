@@ -264,25 +264,10 @@ function mostConfident(items){
   return itm;  
 }
 
-function personFromEntities(entities){
-  if (entities == null){
-    return null;
-  }
-  if (entities.notable_person == null){
-    return null;
-  }
+function bestIntent(data){
   
-  var bestPerson = null;
-  var confidence = 0;
-  entities.notable_person.forEach(function(person){
-    if (person.confidence > confidence){
-      confidence = person.confidence;
-      bestPerson = person.value;
-    }
-  });
-  
-  return bestPerson;
 }
+
 
 function confidentIntent(intents) {
   if (intents == null){
