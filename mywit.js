@@ -15,12 +15,16 @@ function responseFromWit(data) {
 }
 
 function handleDistanceBetween(data){
-  if (data.en)
-  
-  if (data.entities.location.length != 2){
+  var location = data.entities.location;
+  if (location == null || location.length != 2){
     return handleGibberish();
   }
+
+  var loc0 = location[0].resolved.values[0].coords;
+  var loc1 = location[1].resolved.values[0].coords;
+  var distance = getDistanceFromLatLonInKm(loc0.lat, loc0.long, loc1.lat, loc1.long);
   
+  return Promise.resolve(`It's ${distance}km away`); 
 }
 
 function handleGibberish(){
@@ -46,6 +50,7 @@ function handleTimeAtPlace(data){
 
 //https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
 function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+  console.log('checking distance...');
   var R = 6371; // Radius of the earth in km
   var dLat = deg2rad(lat2-lat1);  // deg2rad below
   var dLon = deg2rad(lon2-lon1); 
@@ -63,6 +68,9 @@ function deg2rad(deg) {
   return deg * (Math.PI/180)
 }
 
+function roundTo(val, round){
+  return Math.floor(val / round) * round;
+}
 
 function currentTimeFromTimezone(loc){
   var url = "http://worldtimeapi.org/api/timezone/"+ loc;
