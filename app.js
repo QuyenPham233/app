@@ -17,7 +17,7 @@ const bodyParser = require('body-parser');
 const crypto = require('crypto');
 const express = require('express');
 const fetch = require('node-fetch');
-const handler = require('./mywit');
+const handler = require('./wit_handler');
 
 let Wit = null;
 let log = null;

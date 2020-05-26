@@ -1,9 +1,12 @@
 function responseFromWit(data) {
-  console.log("- - - ");
+  console.log("data from wit:");
   console.log(JSON.stringify(data));
-  console.log("- - - ");
   
   var intent = mostConfident(data.entities.intent);
+  if (intent == null){
+    return handleGibberish();  
+  }
+  
   if (intent.value == "distanceBetween"){
     return handleDistanceBetween(data);
   }
@@ -28,7 +31,7 @@ function handleDistanceBetween(data){
 }
 
 function handleGibberish(){
-  return Promise.resolve("ask me something like 'what time is it in New York?' or 'how far from New York to Los Angeles?'"); 
+  return Promise.resolve("ask me something like 'what time is it in Menlo Park?' or 'how far from Menlo Park to Seattle?'"); 
 }
 
 function handleTimeAtPlace(data){
@@ -36,9 +39,6 @@ function handleTimeAtPlace(data){
   if (loc == null){
     return handleGibberish();
   }
-
-  console.log("loc:");
-  console.log(loc);
   
   var tz = loc.resolved.values[0].timezone;
   var placeName = loc.resolved.values[0].name;
@@ -51,7 +51,6 @@ function handleTimeAtPlace(data){
 
 //https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
 function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
-  console.log('checking distance...');
   var R = 6371; // Radius of the earth in km
   var dLat = deg2rad(lat2-lat1);  // deg2rad below
   var dLon = deg2rad(lon2-lon1); 
@@ -75,47 +74,30 @@ function roundTo(val, round){
 
 function currentTimeFromTimezone(loc){
   var url = "http://worldtimeapi.org/api/timezone/"+ loc;
-
-  console.log("try fetch:  " + url);
   
   return fetch(url, {})
     .then( res => res.json() )
-    .then( data => {
-    console.log(data);
-    
+    .then( data => {    
     //trim off the timezone to avoid date auto-adjusting
     var time = data.datetime.substring(0,19);
     var d = new Date(time);
-    // var options = { hour: 'long', minute: 'numeric', month: 'long', day: 'numeric' };
-    // console.log(d.toTimeString("en-US"));
-    // console.log(d.toUTCString("en-US"));
-    var timestring = d.toUTCString("en-US").substring(0,22);
-    return timestring;
+    return d.toUTCString("en-US").substring(0,22);
   });
 }
 
 function mostConfident(items){
-  console.log("items:");
-  console.log(items);
-  if (items == null){
+  if (items == null || items.length == null){
     return null;
-  }
-  if (items.length == null || items.length == 0){
-    return null;
-  }
-  if (items.length == 1){
-    return items[0];
   }
   var confidence = 0;
-  var itm = null;
-  
+  var res = null;
   items.forEach(function(item){
     if (item.confidence > confidence){
       confidence = item.confidence;
-      itm = item;
+      res = item;
     }
   });
-  return itm;  
+  return res;  
 }
 
 exports.responseFromWit = responseFromWit;
