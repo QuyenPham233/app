@@ -179,10 +179,27 @@ function responseFromWit(data) {
   console.log(JSON.stringify(data));
   console.log("- - - ");
   
+  var intent = mostConfident(data.entities.intent);
+  if (intent.value == "distanceBetween"){
+    return handleDistanceBetween(data);
+  }
+  if (intent.value == "timeAtLocation"){
+    return handleTimeAtPlace(data);
+  }
+  
+  return Promise.resolve("ask me something like 'what time is it in New York?'");
   
   if (data.entities.location == null){
     return Promise.resolve("ask me something like 'what time is it in New York?'");
   }
+  
+}
+
+function handleDistanceBetween(data){
+  
+}
+
+function handleTimeAtPlace(data){
   var loc = mostConfident(data.entities.location);
   if (loc == null){
     return Promise.resolve("ask me something like 'what time is it in New York?'");
@@ -265,27 +282,12 @@ function mostConfident(items){
 }
 
 function bestIntent(data){
-  
-}
-
-
-function confidentIntent(intents) {
-  if (intents == null){
-    console.log("intents null...");
+  if (data == null || data.entities == null || data.entities.intent == null){
     return null;
-  } else {
-    console.log(JSON.stringify(intents));
   }
-  let bestValue;
-  var confidence = 0;
-  intents.forEach(function(intent){
-    if (intent.confidence > confidence){
-      confidence = intent.confidence;
-      bestValue = intent.value;
-    }
-  });
-  return bestValue;
+  return mostConfident(data.entities.intent);
 }
+
 
 
 /*
