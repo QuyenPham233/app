@@ -1,7 +1,7 @@
 {
   "name": "wit-hackathon",
   "version": "1.0.0",
-  "description": "An example of a wit.ai app backing a .",
+  "description": "An example of a wit.ai app backing a Facebook messenger bot.",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
