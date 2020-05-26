@@ -1,15 +1,12 @@
 {
-  "name": "messenger-quick-start",
+  "name": "wit-hackathon",
   "version": "1.0.0",
-  "description": "An example webhook for Facebook Messenger quick start tutorial.",
+  "description": "An example of a wit.ai app backing a .",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/fbsamples/messenger-platform-samples.git"
-  },
+  "repository": {},
   "author": "Facebook",
   "license": "ISC",
   "dependencies": {
