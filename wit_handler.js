@@ -2,17 +2,15 @@ function responseFromWit(data) {
   console.log("data from wit:");
   console.log(JSON.stringify(data));
 
-  var intent = mostConfident(data.entities.intent);
-  if (intent == null) {
-    return handleGibberish();
+  const intent = data.intents.length > 0 && data.intents[0] || "__foo__";
+  
+  switch (intent.name) {
+    case "distanceBetween":
+      return handleDistanceBetween(data);
+    case "timeAtPlace":
+      return handleTimeAtPlace(data);
   }
-  if (intent.value == "distanceBetween") {
-    return handleDistanceBetween(data);
-  }
-  if (intent.value == "timeAtPlace") {
-    return handleTimeAtPlace(data);
-  }
-
+  
   return handleGibberish();
 }
 
@@ -22,26 +20,11 @@ function handleGibberish() {
   );
 }
 
-function mostConfident(items) {
-  if (items == null || items.length == null) {
-    return null;
-  }
-  var confidence = 0;
-  var res = null;
-  items.forEach(function(item) {
-    if (item.confidence > confidence) {
-      confidence = item.confidence;
-      res = item;
-    }
-  });
-  return res;
-}
-
 // ----------------------------------------------------------------------------
 // handleDistanceBetween
 
 function handleDistanceBetween(data) {
-  var location = data.entities.location;
+  const location = data.entities['wit$location:location'];
   if (location == null || location.length != 2) {
     return handleGibberish();
   }
@@ -88,13 +71,13 @@ function roundTo(val, round) {
 // handleTimeAtPlace
 
 function handleTimeAtPlace(data) {
-  var loc = mostConfident(data.entities.location);
+  const loc = data.entities['wit$location:location'] && data.entities['wit$location:location'][0];
   if (loc == null) {
     return handleGibberish();
   }
 
-  var tz = loc.resolved.values[0].timezone;
-  var placeName = loc.resolved.values[0].name;
+  const tz = loc.resolved.values[0].timezone;
+  const placeName = loc.resolved.values[0].name;
 
   return currentTimeFromTimezone(tz).then(res => {
     return `It's currently ${res} in ${placeName}`;
@@ -102,15 +85,14 @@ function handleTimeAtPlace(data) {
 }
 
 function currentTimeFromTimezone(loc) {
-  var url = "http://worldtimeapi.org/api/timezone/" + loc;
+  const url = "http://worldtimeapi.org/api/timezone/" + loc;
 
   return fetch(url, {})
     .then(res => res.json())
     .then(data => {
       //trim off the timezone to avoid date auto-adjusting
-      var time = data.datetime.substring(0, 19);
-      var d = new Date(time);
-      return d.toUTCString("en-US").substring(0, 22);
+      const time = data.datetime.substring(0, 19);
+      return (new Date(time)).toUTCString("en-US").substring(0, 22);
     });
 }
 
