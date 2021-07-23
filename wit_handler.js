@@ -104,6 +104,9 @@ function LoiGioiThieu(data){
   if (noidung == null) {
     return handleGibberish();
   }
+  else {
+      
+  }
   return Promise.resolve(
     "Xin chào! Tôi là chuyên viên trả lời tự động.\nBạn có thể hỏi tôi về:\n- Thông tin công ty.\n- Sản phẩm và dịch vụ.'"
   );
