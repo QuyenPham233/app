@@ -10,6 +10,8 @@ function responseFromWit(data) {
       return handleTimeAtPlace(data);
     case "chao_hoi":
       return LoiGioiThieu(data);
+    case "dich_vu":
+      return GioiThieuSanPham(data);
   }
   
   return handleGibberish();
@@ -116,12 +118,21 @@ function LoiGioiThieu(data){
 }
 
 function GioiThieuSanPham(data){
-  const loichao = data.entities['gioi_thieu:loi_chao'];
-  const congty = data.entities['gioi_thieu:cong_ty'];
-  if (loichao == null && congty == null) {
+  const danhsach = data.entities['san_pham:danh_sach'];
+  const mayban = data.entities['san_pham:may_ban_ma_vach'];
+  const pmquanly = data.entities['san_pham:phan_mem_quan_ly'];
+  if (danhsach == null && mayban == null && pmquanly == null) {
     return handleGibberish();
   }
-  
+  if(danhsach != null){
+    return Promise.resolve("Danh sách sản phẩm:\n- Phần mềm quản lý.\n- Máy bắn mã vạch.")
+  }
+  if(mayban != null){
+    return Promise.resolve("Bạn tham khảo các loại Máy bắn mã vạch tại Link: https://agitech.com.vn/vn/san-pham/may-ban-ma-vach-kiem-kho")
+  }
+  if(pmquanly != null){
+    return Promise.resolve("Bạn tham khảo các loại Phần mềm tại Link: https://agitech.com.vn/vn/san-pham/phan-mem-quan-ly)
+  }
 } 
 
 
