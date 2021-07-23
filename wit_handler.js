@@ -100,16 +100,25 @@ function currentTimeFromTimezone(loc) {
 // ----------------------------------------------------------------------------
 // Chào hỏi
 function LoiGioiThieu(data){
-  const noidung = data.entities['gioi_thieu:loi_chao'];
-  if (noidung == null) {
+  const loichao = data.entities['gioi_thieu:loi_chao'];
+  const congty = data.entities['gioi_thieu:cong_ty'];
+  if (loichao == null && congty == null) {
     return handleGibberish();
   }
   else {
-      
+    const noidung = "";
+    if(loichao != null){
+      noidung += "Xin chào! Tôi là chuyên viên trả lời tự động.\nBạn có thể hỏi tôi về:\n- Thông tin công ty.\n- Sản phẩm và dịch vụ.'";
+    }
+    if(congty != null){
+      if(noidung == ""){
+        noidung += "\n";
+      }
+      noidung += "Công ty Agitech chuyên tư vấn và cung cấp các dịch vụ công nghệ thông tin. Bạn có thể xem thêm tại Link: https://agitech.com.vn/vn/"
+    }
+    return Promise.resolve(noidung);
   }
-  return Promise.resolve(
-    "Xin chào! Tôi là chuyên viên trả lời tự động.\nBạn có thể hỏi tôi về:\n- Thông tin công ty.\n- Sản phẩm và dịch vụ.'"
-  );
+  
 }
 
 
