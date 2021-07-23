@@ -3,6 +3,7 @@ function responseFromWit(data) {
   console.log(JSON.stringify(data));
 
   const intent = data.intents.length > 0 && data.intents[0] || "__foo__";
+  console.log(intent.name);
   switch (intent.name) {
     case "distanceBetween":
       return handleDistanceBetween(data);
@@ -101,11 +102,11 @@ function currentTimeFromTimezone(loc) {
 // Chào hỏi
 function LoiGioiThieu(data){
   const noidung = data.entities['loi_mo_dau:xin_chao'];
-  if (noidung == null || noidung.length != 2) {
+  if (noidung == null) {
     return handleGibberish();
   }
   return Promise.resolve(
-    "Xin chào! Tôi là chuyên viên trả lời tự động.%0D%0ABạn có thể hỏi tôi về:%0D%0A- Thông tin công ty.%0D%0A- Sản phẩm và dịch vụ.'"
+    "Xin chào! Tôi là chuyên viên trả lời tự động.\nBạn có thể hỏi tôi về:\n- Thông tin công ty.\n- Sản phẩm và dịch vụ.'"
   );
 }
 
