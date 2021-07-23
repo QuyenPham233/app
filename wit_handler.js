@@ -109,7 +109,7 @@ function LoiGioiThieu(data){
   }
   else {
     if(loichao != null){
-      return Promise.resolve("Xin chào! Tôi là chuyên viên trả lời tự động.\nBạn có thể hỏi tôi về:\n- Thông tin công ty.\n- Sản phẩm và dịch vụ.'");
+      return Promise.resolve("Xin chào! Tôi là chuyên viên trả lời tự động.\nBạn có thể hỏi tôi về:\n- Thông tin công ty.\n- Sản phẩm kinh doanh.'");
     }
     if(congty != null){
       return Promise.resolve("Công ty Agitech chuyên tư vấn và cung cấp các dịch vụ công nghệ thông tin. Bạn có thể xem thêm tại Link: https://agitech.com.vn/vn/");
