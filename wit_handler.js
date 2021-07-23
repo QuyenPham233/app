@@ -1,3 +1,4 @@
+
 function responseFromWit(data) {
   console.log("data from wit:");
   console.log(JSON.stringify(data));
