@@ -3,7 +3,6 @@ function responseFromWit(data) {
   console.log(JSON.stringify(data));
 
   const intent = data.intents.length > 0 && data.intents[0] || "__foo__";
-  console.log(intent.name);
   switch (intent.name) {
     case "distanceBetween":
       return handleDistanceBetween(data);
@@ -101,7 +100,7 @@ function currentTimeFromTimezone(loc) {
 // ----------------------------------------------------------------------------
 // Chào hỏi
 function LoiGioiThieu(data){
-  const noidung = data.entities['loi_mo_dau:xin_chao'];
+  const noidung = data.entities['gioi_thieu:loi_chao'];
   if (noidung == null) {
     return handleGibberish();
   }
