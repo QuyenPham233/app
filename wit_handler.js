@@ -16,7 +16,7 @@ function responseFromWit(data) {
 
 function handleGibberish() {
   return Promise.resolve(
-    "ask me something like 'what time is it in Menlo Park?' or 'how far from Menlo Park to Seattle?'"
+    "Xin chào! Hãy hỏi tôi về những điều khác.'"
   );
 }
 
@@ -95,5 +95,14 @@ function currentTimeFromTimezone(loc) {
       return (new Date(time)).toUTCString("en-US").substring(0, 22);
     });
 }
+
+// ----------------------------------------------------------------------------
+// Chào hỏi
+function LoiMoDau(data){
+  return Promise.resolve(
+    "Xin chào! Hãy hỏi tôi về những điều khác.'"
+  );
+}
+
 
 exports.responseFromWit = responseFromWit;
