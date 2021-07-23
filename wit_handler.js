@@ -16,7 +16,7 @@ function responseFromWit(data) {
 
 function handleGibberish() {
   return Promise.resolve(
-    "Xin chào! Hãy hỏi tôi về những điều khác.'"
+    "Xin chào! Tôi chưa được dạy để xử lý thông tin này. Bạn có thể quay lại sau!'"
   );
 }
 
@@ -99,12 +99,12 @@ function currentTimeFromTimezone(loc) {
 // ----------------------------------------------------------------------------
 // Chào hỏi
 function LoiMoDau(data){
-  const cautu = data.entities['loi_chao:loi_mo_dau'];
-  if (cautu == null || location.length != 2) {
+  const noidung = data.entities['loi_mo_dau:xin_chao'];
+  if (noidung == null || noidung.length != 2) {
     return handleGibberish();
   }
   return Promise.resolve(
-    "Xin chào! Hãy hỏi tôi về những điều khác.'"
+    "Xin chào! Tôi là chuyên viên trả lời tự động.%0D%0ABạn có thể hỏi tôi về:%0D%0A- Thông tin công ty.%0D%0A- Sản phẩm dịch'"
   );
 }
 
