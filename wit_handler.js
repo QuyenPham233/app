@@ -125,16 +125,14 @@ function GioiThieuSanPham(data){
     return handleGibberish();
   }
   if(danhsach != null){
-    return Promise.resolve("Danh sách sản phẩm:\n- Phần mềm quản lý.\n- Máy bắn mã vạch.")
+    return Promise.resolve("Danh sách sản phẩm:\n- Phần mềm quản lý.\n- Máy bắn mã vạch.");
   }
   if(mayban != null){
-    return Promise.resolve("Bạn tham khảo các loại Máy bắn mã vạch tại Link: https://agitech.com.vn/vn/san-pham/may-ban-ma-vach-kiem-kho")
+    return Promise.resolve("Bạn tham khảo các loại Máy bắn mã vạch tại Link: https://agitech.com.vn/vn/san-pham/may-ban-ma-vach-kiem-kho");
   }
   if(pmquanly != null){
-    return Promise.resolve("Bạn tham khảo các loại Phần mềm tại Link: https://agitech.com.vn/vn/san-pham/phan-mem-quan-ly)
+    return Promise.resolve("Bạn tham khảo các loại Phần mềm tại Link: https://agitech.com.vn/vn/san-pham/phan-mem-quan-ly");
   }
 } 
-
-
 
 exports.responseFromWit = responseFromWit;
