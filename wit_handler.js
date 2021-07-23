@@ -99,6 +99,10 @@ function currentTimeFromTimezone(loc) {
 // ----------------------------------------------------------------------------
 // Chào hỏi
 function LoiMoDau(data){
+  const cautu = data.entities['loi_chao:loi_mo_dau'];
+  if (cautu == null || location.length != 2) {
+    return handleGibberish();
+  }
   return Promise.resolve(
     "Xin chào! Hãy hỏi tôi về những điều khác.'"
   );
