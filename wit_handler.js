@@ -12,17 +12,32 @@ function responseFromWit(data) {
   }
 }
 
+//Đây là câu trả lời mặc định
 function handleGibberish() {
   return Promise.resolve(
-    "Xin chào! Tôi chưa được dạy để xử lý thông tin này. Bạn có thể quay lại sau!'"
+    "Xin lỗi! Tôi chưa được dạy để trả lời câu này! :(("
   );
 }
 
 // ----------------------------------------------------------------------------
 // Chào hỏi
 function LoiGioiThieu(data){
-  
-  return Promise.resolve("Xin chào! Tôi là Agitech bot chuyên viên trả lời tự động.");
+  const entities = data.entities;
+  var keys = Object.keys(entities);
+  //Nếu xác định được thực thể
+  if(keys.length > 0){
+    const entity = data.entities[keys[0]][0];
+    switch(entity.name){
+      case "chatbot":
+        return Promise.resolve("Đúng rồi! Tôi là Agitech bot.");
+      case "admin":
+        return Promise.resolve("Không không! Tôi chỉ là chat bot. Admin là người đã tạo ra tôi :))");
+      default:
+        return handleGibberish();
+    }
+  }else{
+    return Promise.resolve("Xin chào! Tôi là Agitech bot chuyên viên trả lời tự động.");
+  }
 }
 
 exports.responseFromWit = responseFromWit;
