@@ -28,7 +28,7 @@ function LoiGioiThieu(data){
   if(keys.length > 0){
     const entity = data.entities[keys[0]][0];
     switch(entity.name){
-      case "chatbot":
+      case "chat_bot":
         return Promise.resolve("Đúng rồi! Tôi là Agitech bot.");
       case "admin":
         return Promise.resolve("Không không! Tôi chỉ là chat bot. Admin là người đã tạo ra tôi :))");
